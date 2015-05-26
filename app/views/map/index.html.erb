@@ -1,0 +1,55 @@
+<%= provide(:title, "Dove siamo")%>
+<style>
+    #map-canvas {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        top: -20px;
+    }
+</style>
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<script>
+    function initialize() {
+        var mapCanvas = document.getElementById('map-canvas');
+        var mapOptions = {
+            center: new google.maps.LatLng(37.527620,15.075879),
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(mapCanvas, mapOptions)
+
+        var marker = new google.maps.Marker({
+            position: map.getCenter(),
+            map: map,
+            title: "Noi siamo qui"
+        });
+
+        var infowindow = new google.maps.InfoWindow({
+            content: 'Marker Location: ' + marker.getPosition() + ''
+        });
+
+        google.maps.event.addListener(marker, 'click', function(){
+            infowindow.open(map, marker);
+        });
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        //Check if the current URL contains '#'
+        if(document.URL.indexOf("#")==-1)
+        {
+            // Set the URL to whatever it was plus "#".
+            url = document.URL+"#";
+            location = "#";
+
+            //Reload the page
+            location.reload(true);
+
+        }
+    });
+</script>
+<body>
+<div id="map-canvas"></div>
+</body>

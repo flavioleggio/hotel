@@ -1,0 +1,42 @@
+<%= provide(:title, "Sign up")%>
+<div class="col-md-5"><h1>Sign up</h1></div>
+</br></br></br></br>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), :html => { :class => 'form-inline' }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="form group">
+    <%= f.label :email, class: "col-md-2 control-label"%></br>
+    <div class="col-md-5">
+        <%= f.email_field :email, autofocus: true, class: "form-control", placeholder:"Enter email here" %>
+    </div>
+  </div>
+    </br> </br>
+  <div class="form group">
+    <%= f.label :password, class: "col-md-2 control-label" %></br>
+    <% if @validatable %>
+    <em class="col-md-2 control-label">(<%= @minimum_password_length %> characters minimum)</em>
+    <% end %><br/>
+    <div class="col-md-5">
+        <%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder:"Enter password here"  %>
+    </div>
+  </div>
+    </br></br>
+
+
+  <div class="form group">
+    <%= f.label :password_confirmation, class: "col-md-2 control-label"  %><br />
+    <div class="col-md-5">
+    <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control", placeholder:"Confirm password here" %>
+    </div>
+  </div>
+
+    </br></br></br>
+  <div class="col-md-1">
+    <div class="actions">
+        <%= f.submit "Sign up" ,class:"btn btn-primary"%>
+    </div>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links"%>

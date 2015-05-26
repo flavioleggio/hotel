@@ -1,0 +1,41 @@
+<%= provide(:title, "Reservation #{@reservation.id}")%>
+
+<head>
+  <style>
+    p, div {
+        color: white;
+    }
+  </style>
+</head>
+<p>
+  <strong class="col-md-2 control-label" >Nome:</strong>
+  <div color="white"><%= @reservation.name %></div>
+</p>
+
+<p>
+  <strong class="col-md-2 control-label" >Cognome:</strong>
+  <div color="white"><%= @reservation.surname%></div>
+</p>
+
+<p>
+  <strong class="col-md-2 control-label" >Suite?:</strong>
+  <div color="white"><%= @reservation.suite %></div>
+</p>
+
+<p>
+  <strong class="col-md-2 control-label" >Date di arrivo:</strong>
+  <div color="white"><%= @reservation.date_in %></div>
+</p>
+
+<p>
+  <strong class="col-md-2 control-label" >Date di partenza:</strong>
+  <div color="white"><%= @reservation.date_out %></div>
+</p>
+
+<p>
+  <strong class="col-md-2 control-label" >Ospiti:</strong>
+  <div color="white"><%= @reservation.hosts %></div>
+</p>
+</br>
+<div class="col-md-3"><%= link_to 'Edit', edit_reservation_path(@reservation), class:"btn btn-info"%></div>
+

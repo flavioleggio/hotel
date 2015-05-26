@@ -1,0 +1,11 @@
+<%= provide(:title, "Edit reservation")%>
+
+<h1>Editing Reservation</h1>
+
+<%= render 'form' %>
+</br>
+<div class="col-md-3">
+    <%= link_to 'Show', @reservation, class:"btn btn-success" %> |
+    <%= link_to 'Back', reservations_path, class:"btn btn-warning" %> |
+    <%= link_to 'Delete', reservation_path(@reservation), data: { confirm: "Are you sure?" }, method: :delete , class:"btn btn-danger"%>
+</div>

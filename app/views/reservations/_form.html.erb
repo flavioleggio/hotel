@@ -1,0 +1,57 @@
+<%= form_for(@reservation, :html => { :class => 'form-inline' }) do |f| %>
+  <% if @reservation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
+
+      <ul>
+      <% @reservation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form group">
+    <%= f.label "nome", class: "col-md-2 control-label"  %><br>
+    <div class="col-md-5">
+        <%= f.text_field  :name, class: "form-control" %>
+  </div></div>
+    </br></br>
+  <div class="form group">
+    <%= f.label "cognome", class: "col-md-2 control-label"  %><br>
+    <div class="col-md-5">
+        <%= f.text_field  :surname, class: "form-control" %>
+  </div></div>
+    </br></br>
+  <div class="form group">
+    <%= f.label "suite?", class: "col-md-2 control-label"  %><br>
+    <div class="col-md-5">
+        <%= f.check_box :suite, class: "form-control" %>
+  </div></div>
+    </br></br>
+  <div class="form group">
+    <%= f.label "data di arrivo", class: "col-md-2 control-label"  %><br>
+    <div class="col-md-5">
+        <%= f.date_select :date_in, class: "form-control" %>
+  </div></div>
+    </br></br>
+  <div class="form group">
+    <%= f.label "data di partenza", class: "col-md-2 control-label"  %><br>
+    <div class="col-md-5">
+        <%= f.date_select :date_out, class: "form-control" %>
+  </div></div>
+    </br></br>
+  <div class="form group">
+    <%= f.label "numero di ospiti", class: "col-md-2 control-label"  %><br>
+    <div class="col-md-5">
+        <%= f.number_field :hosts, class: "form-control" %>
+  </div></div>
+    </br></br>
+  <div class="col-md-5">
+        <div class="actions">
+            <%= f.submit "Inserisci prenotazione", class:"btn btn-primary"%>
+        </div>
+  </div>
+<% end %>
+
+</br></br>
