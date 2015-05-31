@@ -1,54 +1,131 @@
 <%= provide(:title, "Dove siamo")%>
 <style>
+  h3, p{
+      color: black;
+  }
     #map-canvas {
         width: 100%;
         height: 100%;
         position: relative;
-        top: -20px;
-    }
-    p{
-        color:black;
+        top: -73px;
     }
 </style>
+
 <script src="https://maps.googleapis.com/maps/api/js"></script>
+
 <script>
     function initialize() {
-        var mapCanvas = document.getElementById('map-canvas');
+        var coord = new google.maps.LatLng(37.519296,15.069061);
+
         var mapOptions = {
-            center: new google.maps.LatLng(37.527620,15.075879),
-            zoom: 15,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            center: coord,
+            zoom: 13
+        };
+
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = new google.maps.LatLng(position.coords.latitude,
+                        position.coords.longitude);
+
+                var marker1 = new google.maps.Marker({
+                    position: map.getCenter(),
+                    map: map,
+                    draggable: false,
+                    title: 'Clicca qui per maggiori informazioni'
+                });
+
+                var contentString1 ='<h3>Hotel</h3><br>' + '<p>Via Santa Sofia, 27</p>' + '<p>Catania (CT)</p>'
+                        + '<p>Tel: 095 1137499<br>Cell:3339134871</p>'
+
+                var infowindow1 = new google.maps.InfoWindow({
+                    content: contentString1
+                });
+
+                google.maps.event.addListener(marker1, 'click', function() {
+                    infowindow1.open(map, marker1);
+                });
+
+                var marker2 = new google.maps.Marker({
+                    position: pos,
+                    map: map,
+                    draggable: false,
+                    title: 'Posizione attuale'
+                });
+
+                var directionsService = new google.maps.DirectionsService();
+                var directionsRenderer = new google.maps.DirectionsRenderer({
+                    suppressMarkers: true
+                });
+                var request = {
+                    origin:pos,
+                    destination:coord,
+                    travelMode: google.maps.TravelMode.DRIVING
+                };
+                directionsRenderer.setMap(map);
+                directionsService.route(request, function(result, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                        directionsRenderer.setDirections(result);
+                    }
+                });
+
+                google.maps.event.addListener(marker2, 'click', function(){
+                    infowindow2.open(map, marker2);
+                });
+
+                var contentString2 ='<h3>Posizione attuale</h3><br>'+'<p>'+pos.lat()+', '+pos.lng()+'</p>'
+
+                var infowindow2 = new google.maps.InfoWindow({
+                    content: contentString2
+                });
+            }, function() {
+                handleNoGeolocation(true);
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            handleNoGeolocation(false);
         }
-        var map = new google.maps.Map(mapCanvas, mapOptions)
 
-        var marker = new google.maps.Marker({
-            position: map.getCenter(),
-            map: map,
-            title: "Noi siamo qui"
-        });
-
-        var infowindow = new google.maps.InfoWindow({
-            content: '<p>Marker Location: ' + marker.getPosition() + '</p>'
-        });
-
-        google.maps.event.addListener(marker, 'click', function(){
-            infowindow.open(map, marker);
-        });
     }
+
+    function handleNoGeolocation(errorFlag) {
+        if (errorFlag) {
+            var content = 'Error: The Geolocation service failed.';
+        } else {
+            var content = 'Error: Your browser doesn\'t support geolocation.';
+        }
+
+        var options = {
+            map: map,
+            position: new google.maps.LatLng(60, 105),
+            content: content
+        };
+
+        var infowindow = new google.maps.InfoWindow(options);
+        map.setCenter(options.position);
+    }
+
     google.maps.event.addDomListener(window, 'load', initialize);
 </script>
+
 <script type="text/javascript">
     $(document).ready(function(){
-    //Check if the current URL contains '#'
-    if(document.URL.indexOf("#")==-1) {
-    // Set the URL to whatever it was plus "#".
-        url = document.URL+"#";
-        location = "#";
+
+        //Check if the current URL contains '#'
+        if(document.URL.indexOf("#")==-1)
+        {
+            // Set the URL to whatever it was plus "#".
+            url = document.URL+"#";
+            location = "#";
+
             //Reload the page
-        location.reload(true);
-    }
+            location.reload(true);
+
+        }
     });
 </script>
+
 <body>
 <div id="map-canvas"></div>
 </body>

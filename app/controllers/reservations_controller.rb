@@ -4,7 +4,12 @@ class ReservationsController < ApplicationController
   # GET /reservations
   # GET /reservations.json
   def index
-    @reservations = Reservation.all
+    @user = current_user
+    if @user.admin?
+      @reservations = Reservation.all
+    else
+      render html: "<strong>Access denied</strong></br><p>Please return to Home</p>".html_safe
+    end
   end
 
   # GET /reservations/1
@@ -19,22 +24,28 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/1/edit
   def edit
-
-
   end
 
   # POST /reservations
   # POST /reservations.json
   def create
     @reservation = Reservation.new(reservation_params)
-
-    respond_to do |format|
-      if @reservation.save
-        format.html { redirect_to @reservation, notice: 'Reservation was successfully created.' }
+    if @reservation.date_in < @reservation.date_out && @reservation.date_in >= DateTime.now.to_date
+      respond_to do |format|
+        if @reservation.save
+          @user = current_user
+          ReservationMailer.booking_confirmation(@user,@reservation).deliver
+          format.html { redirect_to @reservation, notice: 'Reservation was successfully created.' }
+          format.json { render :show, status: :created, location: @reservation }
+        else
+          format.html { render :new }
+          format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to new_reservation_path, notice: 'Invalid dates' }
         format.json { render :show, status: :created, location: @reservation }
-      else
-        format.html { render :new }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -43,7 +54,9 @@ class ReservationsController < ApplicationController
   # PATCH/PUT /reservations/1.json
   def update
     respond_to do |format|
+      @user = current_user
       if @reservation.update(reservation_params)
+        ReservationMailer.booking_confirmation(@user,@reservation).deliver
         format.html { redirect_to @reservation, notice: 'Reservation was successfully updated.' }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -73,4 +86,6 @@ class ReservationsController < ApplicationController
     def reservation_params
       params.require(:reservation).permit(:name, :surname, :suite, :date_in, :date_out, :hosts)
     end
+
+
 end
