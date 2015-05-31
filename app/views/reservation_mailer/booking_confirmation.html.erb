@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+</head>
+<body>
+<h1>Reservation complete</h1>
+<p>
+  Dear <strong><%=@res.name%></strong>, You have successfully booked at hotel.com
+<br/>
+</p>
+Here is your reservation summary:
+<br/>
+<strong>Name: </strong><%=@res.name%>
+<br/>
+<strong>Surname: </strong><%=@res.surname%>
+<br/>
+<strong>Suite?: </strong><%=@res.suite%>
+<br/>
+<strong>Arrival date: </strong><%=@res.date_in%>
+<br/>
+<strong>Departure date: </strong><%=@res.date_out%>
+<br/>
+<strong>N° of hosts: </strong><%=@res.hosts%>
+<br/><br/>
+<p>Thanks for joining and have a great day!</p>
+</body>
+</html>

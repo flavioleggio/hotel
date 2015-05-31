@@ -1,0 +1,39 @@
+<%= form_for(@comment, :html => { :class => 'form-inline' }) do |f| %>
+  <% if @comment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+
+      <ul>
+      <% @comment.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form group">
+    <%= f.label :title, class: "col-md-2 control-label" %><br>
+    <div class="col-md-5">
+    <%= f.text_field :title, class: "form-control" %>
+    </div>
+  </div>
+    <br><br>
+  <div class="form group">
+    <%= f.label :description, class: "col-md-2 control-label" %><br>
+    <div class="col-md-5">
+    <%= f.text_area :description, class: "form-control", rows:"6"%>
+    </div>
+  </div>
+    <br><br><br><br><br><br><br>
+  <div class="form group">
+    <div class="col-md-5">
+    Rate: <%= rating_for @comment, "Rate", disable_after_rate: false  %>
+    </div>
+  </div>
+    <br><br><br>
+    <div class="col-md-5">
+  <div class="actions">
+    <%= f.submit "Add Comment", class:"btn btn-primary" %>
+  </div></div>
+    <br><br>
+<% end %>
